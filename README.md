@@ -51,6 +51,7 @@ atomicwrites 1.2.1, urllib3 1.24.1, idna 2.8, chardet 3.0.4 and certifi 2018.11.
 - `tests/test_main.py` — 9 pytest tests, which give developers a way to check that each upgrade
   step still works.
 - `Pipfile` / `Pipfile.lock` — every version pinned exactly.
+- `Dockerfile` / `.dockerignore` — container build for the app (see [Docker](#docker)).
 
 ## Setup
 
@@ -71,6 +72,26 @@ pipenv@2024 run pytest
 ```
 
 Interactive docs: http://127.0.0.1:8000/docs
+
+## Docker
+
+```sh
+docker build -t agent-testing:old .
+docker run --rm -p 8000:8000 agent-testing:old
+```
+
+Then open http://127.0.0.1:8000/docs.
+
+The Dockerfile is a two-stage build:
+
+1. **Build stage** (`python:3.8.10-buster`): the full image includes gcc, which is needed to
+   compile uvloop and httptools from source. It installs pipenv 2024.4.1, exports the runtime
+   packages from `Pipfile.lock`, and installs them into a standalone venv at `/venv`.
+2. **Runtime stage** (`python:3.8.10-slim-buster`): copies in only `/venv` and `app/`, then starts
+   uvicorn with `--loop asyncio`.
+
+The final image is about 220 MB and contains only the runtime packages: no pipenv, compiler, test
+packages or tests. Debian Buster has been end of life since June 2024.
 
 ## Endpoints
 
