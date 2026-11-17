@@ -1,0 +1,34 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+# Every version below is pinned to its December 2018 (or earlier) release.
+[packages]
+fastapi = "==0.1.0"
+starlette = "==0.9.7"
+pydantic = "==0.16"
+uvicorn = "==0.3.22"
+uvloop = "==0.11.3"       # installed but unusable on 3.8; run uvicorn with --loop asyncio
+httptools = "==0.0.11"
+h11 = "==0.8.1"
+websockets = "==7.0"
+click = "==7.0"
+
+[dev-packages]
+pytest = "==4.0.2"
+attrs = "==18.2.0"
+pluggy = "==0.8.0"
+py = "==1.7.0"
+more-itertools = "==4.3.0"
+six = "==1.12.0"
+atomicwrites = "==1.2.1"
+requests = "==2.21.0"
+urllib3 = "==1.24.1"
+idna = "==2.8"
+chardet = "==3.0.4"
+certifi = "==2018.11.29"
+setuptools = "==40.6.3"  # newer setuptools ships a pytest plugin that breaks pytest 4.0
+
+[requires]
+python_version = "3.8"
